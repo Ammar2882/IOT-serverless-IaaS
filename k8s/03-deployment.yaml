@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iot-worker
+  namespace: iot-pipeline
+  labels:
+    app: iot-worker
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: iot-worker
+  template:
+    metadata:
+      labels:
+        app: iot-worker
+    spec:
+      containers:
+        - name: iot-worker
+          image: iot-worker:dev
+          # Local image built straight into Docker Desktop's store — never
+          # try to pull it from a registry.
+          imagePullPolicy: Never
+          ports:
+            - name: http
+              containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: iot-worker-config
+            - secretRef:
+                name: iot-worker-aws-credentials
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 2
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3

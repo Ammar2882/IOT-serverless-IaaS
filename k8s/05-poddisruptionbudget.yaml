@@ -1,0 +1,10 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: iot-worker
+  namespace: iot-pipeline
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: iot-worker
