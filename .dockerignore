@@ -1,0 +1,11 @@
+node_modules
+dist
+.git
+.gitignore
+cdk.out
+.env
+.env.*
+test
+lambda
+bin
+lib
