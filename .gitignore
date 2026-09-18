@@ -1,0 +1,17 @@
+*.js
+!jest.config.js
+*.d.ts
+node_modules
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out
+
+.env
+.env.*
+!.env.example
+dist/
+
+# Never commit a real filled-in k8s Secret — only the .example.yaml template
+k8s/*secret*.yaml
+!k8s/*secret*.example.yaml
